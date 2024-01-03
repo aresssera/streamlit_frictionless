@@ -51,8 +51,10 @@ def perform_quality_check(frame, file_name):
 
                             for field in uploaded_file_schema['fields']:
                                 if field['type'] == 'year':
-                                    field['type'] = 'integer
+                                    field['type'] = 'integer'
                             schema = Schema(uploaded_file_schema)
+
+                        
 
                             
                             print(schema)
