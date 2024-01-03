@@ -164,7 +164,7 @@ def main():
         st.write(dataframe)
         if st.button(translation["check_button"]):
             progress_bar = st.progress(0)
-            report = perform_quality_check(dataframe, uploaded_file.name)
+            report = perform_quality_check(uploaded_file, uploaded_file.name)
 
             if isinstance(report, str):
                 st.error(f"{translation['error']} {report}")
