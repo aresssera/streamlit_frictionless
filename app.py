@@ -87,6 +87,7 @@ translations = {
         "check_button": "Überprüfen",
         "error": "Fehler während der Validierung:",
         "validation_complete": "Validierung abgeschlossen!",
+        "valid": "Das Dokument ist gültig.",
     },
     "Français": {
         "title": "Contrôle de qualité CSV avec Frictionless",
@@ -95,6 +96,7 @@ translations = {
         "check_button": "Vérifier",
         "error": "Erreur de validation:",
         "validation_complete": "Validation terminée !",
+        "valid": "Le document est valide.",
     },
     "Italiano": {
         "title": "Controllo qualità CSV con Frictionless",
@@ -103,6 +105,7 @@ translations = {
         "check_button": "Controllo",
         "error": "Errore durante la validazione:",
         "validation_complete": "Validazione completata!",
+        "valid": "Il documento è valido.",
     },
     "English": {
         "title": "CSV Quality Check with Frictionless",
@@ -111,6 +114,7 @@ translations = {
         "check_button": "Check",
         "error": "Error during validation:",
         "validation_complete": "Validation complete!",
+        "valid": "The document is valid.",
     }
 }
 #-------------------------------------------------------------------------------
@@ -150,7 +154,7 @@ def main():
             else:
                 if report.valid:
                     st.success(translation["validation_complete"])
-                    st.success("Valid!)
+                    st.success(translation["valid"])
                 else:
                     st.error(translation["validation_complete"])
                     st.error(report.tasks)
