@@ -164,7 +164,6 @@ def main():
                     st.success(translation["validation_complete"])
                     st.success(translation["valid"])
                 else:
-                    st.write(report)
                     st.error(translation["validation_complete"])
                     st.error(get_error_messages(report))
 
