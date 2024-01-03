@@ -8,16 +8,13 @@ from urllib.request import urlopen
 import pandas as pd
 
 # function to perform quality check
-def perform_quality_check(file):
+def perform_quality_check(frame, file_name):
 
     MAX_RETRIES = 2
     DELAY_SECONDS = 1
 
     try:
-        file_name = file.name
-        # load content of the file as dataframe
-        frame = pd.read_csv(file)
-
+        
         # save uploaded file locally
         with open(file_name, 'wb') as f:
             f.write(file.read())
@@ -153,7 +150,7 @@ def main():
         st.write(dataframe)
         if st.button(translation["check_button"]):
             progress_bar = st.progress(0)
-            report = perform_quality_check(uploaded_file)
+            report = perform_quality_check(dataframe, uploaded_file.name)
 
             if isinstance(report, str):
                 st.error(f"{translation['error']} {report}")
