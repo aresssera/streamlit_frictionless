@@ -18,7 +18,7 @@ def perform_quality_check(frame, file_name):
         with open(file_name, 'wb') as f:
             f.write(frame.read())
 
-        data = np.genfromtxt(file_name, delimiter=',')
+        data = np.loadtxt(file_name, delimiter=',')
 
         if file_name in ogdNbr_mapping:
             ID = ogdNbr_mapping[file_name]
