@@ -15,6 +15,8 @@ def perform_quality_check(file):
 
     try:
         file_name = file.name
+        # load content of the file as dataframe
+        frame = pd.read_csv(uploaded_file)
 
         # save uploaded file locally
         with open(file_name, 'wb') as f:
@@ -59,7 +61,7 @@ def perform_quality_check(file):
                             schema = Schema(uploaded_file_schema)
 
                             # perform validation using schema matched to uploaded file
-                            report = validate(file, schema=schema)
+                            report = validate(frame, schema=schema)
                             
                             return [report, schema]
 
@@ -156,9 +158,12 @@ def main():
             if isinstance(report, str):
                 st.error(f"{translation['error']} {report}")
             else:
-                st.success(translation["validation_complete"])
-                st.write(report[0])
-                st.write(report[1])
+                if report.valid:
+                    st.success(translation["validation_complete"])
+                    st.write(report.valid)
+                else:
+                    st.error(translation["validation_complete"])
+                    st.write(report.tasks)
 
 if __name__ == "__main__":
     main()
