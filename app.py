@@ -63,7 +63,7 @@ def perform_quality_check(file):
                             # perform validation using schema matched to uploaded file
                             report = validate(frame, schema=schema)
                             
-                            return [report, schema]
+                            return report
 
                         return f"No schema found for the uploaded file '{file_name}' in the datapackage."
 
