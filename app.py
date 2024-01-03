@@ -14,13 +14,6 @@ def perform_quality_check(frame, file_name):
     DELAY_SECONDS = 1
 
     try:
-        
-        # save uploaded file locally
-        #with open(file_name, 'wb') as f:
-        #    f.write(file.read())
-
-        # load the local file path
-        #local_file_path = file_name  # Update this to your file path
 
         if file_name in ogdNbr_mapping:
             ID = ogdNbr_mapping[file_name]
@@ -157,10 +150,10 @@ def main():
             else:
                 if report.valid:
                     st.success(translation["validation_complete"])
-                    st.write(report.valid)
+                    st.success("Valid!)
                 else:
                     st.error(translation["validation_complete"])
-                    st.write(report.tasks)
+                    st.error(report.tasks)
 
 if __name__ == "__main__":
     main()
