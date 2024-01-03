@@ -77,8 +77,9 @@ def perform_quality_check(frame, file_name):
 def get_error_messages(report):
 
     print(report.tasks)
+    print(report.tasks.errors)
 
-    return report_tasks.errors
+    return "sälü"
 
 
 
