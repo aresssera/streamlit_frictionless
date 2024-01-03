@@ -76,6 +76,8 @@ def perform_quality_check(frame, file_name):
 # get cleaner error messages
 def get_error_messages(report_tasks):
 
+    print(report_tasks)
+
     return report_tasks.errors
 
 
