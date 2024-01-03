@@ -14,6 +14,11 @@ def perform_quality_check(frame, file_name):
     DELAY_SECONDS = 1
 
     try:
+        # save uploaded file locally
+        with open(file_name, 'wb') as f:
+            f.write(frame.read())
+
+        data = np.genfromtxt(file_name, delimiter=',')
 
         if file_name in ogdNbr_mapping:
             ID = ogdNbr_mapping[file_name]
@@ -60,7 +65,7 @@ def perform_quality_check(frame, file_name):
                             print(schema)
 
                             # perform validation using schema matched to uploaded file
-                            report = validate(frame, schema=schema)
+                            report = validate(data, schema=schema)
                             
                             return report
 
