@@ -166,7 +166,7 @@ def main():
                 else:
                     st.write(report)
                     st.error(translation["validation_complete"])
-                    st.error(print(get_error_messages(report)))
+                    st.error(get_error_messages(report))
 
 if __name__ == "__main__":
     main()
