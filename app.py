@@ -73,7 +73,10 @@ def perform_quality_check(frame, file_name):
         return f"Error during validation: {e}"
 
 
+# get cleaner error messages
+def get_error_messages(report_tasks):
 
+    return report_tasks.errors
 
 
 
@@ -157,7 +160,7 @@ def main():
                     st.success(translation["valid"])
                 else:
                     st.error(translation["validation_complete"])
-                    st.error(report.tasks)
+                    st.error(get_error_messages(report.tasks))
 
 if __name__ == "__main__":
     main()
