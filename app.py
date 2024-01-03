@@ -35,12 +35,11 @@ def perform_quality_check(frame, file_name):
 
                         for resource in datapackage_json.get('resources', []):
 
-                            print('resource', resource)
-
-                            print('path' in list(resource.keys()))
+                            #print('resource', resource)
+                            #print('path' in list(resource.keys()))
 
                             if 'path' in list(resource.keys()) and file_name in resource['path']:
-                                print('found')
+                                #print('found')
                                 uploaded_file_schema = resource['schema']
                                 break
 
@@ -49,6 +48,7 @@ def perform_quality_check(frame, file_name):
 
                             # convert dictionary schema into frictionless schema object
                             schema = Schema(uploaded_file_schema)
+                            print(schema)
 
                             # perform validation using schema matched to uploaded file
                             report = validate(frame, schema=schema)
@@ -79,7 +79,7 @@ def get_error_messages(report):
     text = ''
     
     for err in report.tasks[0].errors:
-        text = text + err.title + '\n' + err.message + '\n\n'
+        text = text + err.title + ':\n' + err.message + '\n\n'
 
     return text
 
@@ -165,7 +165,7 @@ def main():
                     st.success(translation["valid"])
                 else:
                     st.error(translation["validation_complete"])
-                    st.error(get_error_messages(report))
+                    st.error(print(get_error_messages(report)))
 
 if __name__ == "__main__":
     main()
