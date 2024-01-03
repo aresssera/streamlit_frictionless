@@ -61,7 +61,7 @@ def perform_quality_check(file):
                             # perform validation using schema matched to uploaded file
                             report = validate(file, schema=schema)
                             
-                            return pd.read_csv(file)
+                            return file
 
                         return f"No schema found for the uploaded file '{file_name}' in the datapackage."
 
@@ -146,6 +146,9 @@ def main():
 
     if uploaded_file is not None:
         st.write(translation["uploaded_success"])
+
+        dataframe = pd.read_csv(uploaded_file)
+        st.write(dataframe)
         if st.button(translation["check_button"]):
             progress_bar = st.progress(0)
             report = perform_quality_check(uploaded_file)
