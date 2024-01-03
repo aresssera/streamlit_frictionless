@@ -6,6 +6,7 @@ from frictionless import Schema
 from mapping import ogdNbr_mapping
 from urllib.request import urlopen
 import pandas as pd
+import numpy as np
 
 # function to perform quality check
 def perform_quality_check(frame, file_name):
