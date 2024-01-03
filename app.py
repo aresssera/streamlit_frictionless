@@ -16,7 +16,7 @@ def perform_quality_check(file):
     try:
         file_name = file.name
         # load content of the file as dataframe
-        frame = pd.read_csv(uploaded_file)
+        frame = pd.read_csv(file)
 
         # save uploaded file locally
         with open(file_name, 'wb') as f:
