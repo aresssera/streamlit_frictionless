@@ -76,10 +76,12 @@ def perform_quality_check(frame, file_name):
 # get cleaner error messages
 def get_error_messages(report):
 
-    print(report.tasks)
-    print(report.tasks.errors)
+    text = ''
+    
+    for err in report.tasks[0].errors:
+        text = text + err.title + '\n' + err.message + '\n\n'
 
-    return "sälü"
+    return text
 
 
 
