@@ -47,7 +47,14 @@ def perform_quality_check(frame, file_name):
                         if uploaded_file_schema:
 
                             # convert dictionary schema into frictionless schema object
+
+
+                            for field in uploaded_file_schema['fields']:
+                                if field['type'] == 'year':
+                                    field['type'] = 'integer
                             schema = Schema(uploaded_file_schema)
+
+                            
                             print(schema)
 
                             # perform validation using schema matched to uploaded file
