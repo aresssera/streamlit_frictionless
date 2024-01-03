@@ -160,7 +160,7 @@ def main():
     if uploaded_file is not None:
         st.write(translation["uploaded_success"])
 
-        dataframe = pd.read_csv(uploaded_file)
+        dataframe = pd.read_csv(uploaded_file, keep_default_na=True)
         st.write(dataframe)
         if st.button(translation["check_button"]):
             progress_bar = st.progress(0)
