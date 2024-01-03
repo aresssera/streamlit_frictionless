@@ -61,7 +61,7 @@ def perform_quality_check(file):
                             # perform validation using schema matched to uploaded file
                             report = validate(file, schema=schema)
                             
-                            return report
+                            return [report, schema]
 
                         return f"No schema found for the uploaded file '{file_name}' in the datapackage."
 
@@ -157,7 +157,8 @@ def main():
                 st.error(f"{translation['error']} {report}")
             else:
                 st.success(translation["validation_complete"])
-                st.write(report)
+                st.write(report[0])
+                st.write(report[1])
 
 if __name__ == "__main__":
     main()
