@@ -153,7 +153,7 @@ def main():
                 st.error(f"{translation['error']} {report}")
             else:
                 st.success(translation["validation_complete"])
-                st.write(report.valid)
+                st.write(report)
 
 if __name__ == "__main__":
     main()
