@@ -16,11 +16,11 @@ def perform_quality_check(frame, file_name):
     try:
         
         # save uploaded file locally
-        with open(file_name, 'wb') as f:
-            f.write(file.read())
+        #with open(file_name, 'wb') as f:
+        #    f.write(file.read())
 
         # load the local file path
-        local_file_path = file_name  # Update this to your file path
+        #local_file_path = file_name  # Update this to your file path
 
         if file_name in ogdNbr_mapping:
             ID = ogdNbr_mapping[file_name]
