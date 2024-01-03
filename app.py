@@ -5,6 +5,7 @@ from frictionless import validate
 from frictionless import Schema
 from mapping import ogdNbr_mapping
 from urllib.request import urlopen
+import pandas as pd
 
 # function to perform quality check
 def perform_quality_check(file):
@@ -60,7 +61,7 @@ def perform_quality_check(file):
                             # perform validation using schema matched to uploaded file
                             report = validate(file, schema=schema)
                             
-                            return file
+                            return pd.read_csv(file)
 
                         return f"No schema found for the uploaded file '{file_name}' in the datapackage."
 
