@@ -6,7 +6,6 @@ from frictionless import Schema
 from mapping import ogdNbr_mapping
 from urllib.request import urlopen
 import pandas as pd
-import numpy as np
 
 # function to perform quality check
 def perform_quality_check(frame, file_name):
@@ -15,11 +14,6 @@ def perform_quality_check(frame, file_name):
     DELAY_SECONDS = 1
 
     try:
-        # save uploaded file locally
-        with open(file_name, 'wb') as f:
-            f.write(frame.read())
-
-        data = np.loadtxt(file_name, delimiter=',')
 
         if file_name in ogdNbr_mapping:
             ID = ogdNbr_mapping[file_name]
@@ -66,7 +60,7 @@ def perform_quality_check(frame, file_name):
                             print(schema)
 
                             # perform validation using schema matched to uploaded file
-                            report = validate(data, schema=schema)
+                            report = validate(frame, schema=schema)
                             
                             return report
 
@@ -170,7 +164,7 @@ def main():
         st.write(dataframe)
         if st.button(translation["check_button"]):
             progress_bar = st.progress(0)
-            report = perform_quality_check(uploaded_file, uploaded_file.name)
+            report = perform_quality_check(dataframe, uploaded_file.name)
 
             if isinstance(report, str):
                 st.error(f"{translation['error']} {report}")
