@@ -158,7 +158,7 @@ def main():
             else:
                 st.success(translation["validation_complete"])
                 st.write(report[0])
-                st.write(type(report[1]))
+                st.write(report[1])
 
 if __name__ == "__main__":
     main()
