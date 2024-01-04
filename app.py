@@ -154,25 +154,20 @@ def main():
     if uploaded_file is not None:
         st.write(translation["uploaded_success"])
 
-        # save uploaded file to a temporary location
-        temp_location = tempfile.NamedTemporaryFile(delete=False)
-        temp_location.write(uploaded_file.getvalue())
-
-        # close file to ensure it's flushed and ready for reading
-        temp_location.close()
-
-        # use temporary file's path for validation
-        file_path = temp_location.name
+        # save uploaded file to secure location (e.g., /tmp)
+        temp_location = os.path.join(tempfile.gettempdir(), uploaded_file.name)
+        with open(temp_location, 'wb') as temp_file:
+            temp_file.write(uploaded_file.getvalue())
 
         
         
         if st.button(translation["check_button"]):
             progress_bar = st.progress(0)
             # perform validation using file path
-            report = perform_quality_check(file_path, uploaded_file.name)
+            report = perform_quality_check(temp_location, uploaded_file.name)
     
             # delete temporary file after validation
-            os.unlink(file_path)  # remove temporary file once done
+            os.remove(temp_location)  # remove temporary file once done
 
             if isinstance(report, str):
                 st.error(f"{translation['error']} {report}")
