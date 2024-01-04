@@ -164,15 +164,15 @@ def main():
         # use temporary file's path for validation
         file_path = temp_location.name
 
-        # perform validation using file path
-        report = perform_quality_check(file_path, uploaded_file.name)
-
-        # delete temporary file after validation
-        os.unlink(file_path)  # remove temporary file once done
+        
         
         if st.button(translation["check_button"]):
             progress_bar = st.progress(0)
-            report = perform_quality_check(dataframe, uploaded_file.name)
+            # perform validation using file path
+            report = perform_quality_check(file_path, uploaded_file.name)
+    
+            # delete temporary file after validation
+            os.unlink(file_path)  # remove temporary file once done
 
             if isinstance(report, str):
                 st.error(f"{translation['error']} {report}")
