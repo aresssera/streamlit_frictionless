@@ -155,7 +155,8 @@ def main():
         st.write(translation["uploaded_success"])
 
         # save uploaded file to secure location (e.g., /tmp)
-        temp_location = os.path.join(tempfile.gettempdir(), uploaded_file.name)
+        temp_dir = tempfile.TemporaryDirectory()
+        temp_location = os.path.join(temp_dir.name, uploaded_file.name)
         with open(temp_location, 'wb') as temp_file:
             temp_file.write(uploaded_file.getvalue())
 
@@ -166,8 +167,8 @@ def main():
             # perform validation using file path
             report = perform_quality_check(temp_location, uploaded_file.name)
     
-            # delete temporary file after validation
-            os.remove(temp_location)  # remove temporary file once done
+            # delete temporary folder after validation
+            temp_dir.cleanup()
 
             if isinstance(report, str):
                 st.error(f"{translation['error']} {report}")
