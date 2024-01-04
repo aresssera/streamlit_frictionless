@@ -6,6 +6,8 @@ from frictionless import Schema
 from mapping import ogdNbr_mapping
 from urllib.request import urlopen
 import pandas as pd
+import os
+import tempfile
 
 # function to perform quality check
 def perform_quality_check(frame, file_name):
@@ -46,13 +48,6 @@ def perform_quality_check(frame, file_name):
 
                         if uploaded_file_schema:
 
-                            
-
-
-                            for field in uploaded_file_schema['fields']:
-                                if field['type'] == 'year':
-                                    field['type'] = 'integer'
-                            
                             
                             # convert dictionary schema into frictionless schema object
                             schema = Schema(uploaded_file_schema)
@@ -159,8 +154,22 @@ def main():
     if uploaded_file is not None:
         st.write(translation["uploaded_success"])
 
-        dataframe = pd.read_csv(uploaded_file, skip_blank_lines =False)
-        st.write(dataframe)
+        # save uploaded file to a temporary location
+        temp_location = tempfile.NamedTemporaryFile(delete=False)
+        temp_location.write(uploaded_file.getvalue())
+
+        # close file to ensure it's flushed and ready for reading
+        temp_location.close()
+
+        # use temporary file's path for validation
+        file_path = temp_location.name
+
+        # perform validation using file path
+        report = perform_quality_check(file_path, uploaded_file.name)
+
+        # delete temporary file after validation
+        os.unlink(file_path)  # remove temporary file once done
+        
         if st.button(translation["check_button"]):
             progress_bar = st.progress(0)
             report = perform_quality_check(dataframe, uploaded_file.name)
