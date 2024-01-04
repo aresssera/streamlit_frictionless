@@ -6,8 +6,6 @@ from frictionless import Schema
 from mapping import ogdNbr_mapping
 from urllib.request import urlopen
 import pandas as pd
-import os
-import tempfile
 
 # function to perform quality check
 def perform_quality_check(frame, file_name):
@@ -48,10 +46,18 @@ def perform_quality_check(frame, file_name):
 
                         if uploaded_file_schema:
 
-                            
                             # convert dictionary schema into frictionless schema object
+
+
+                            for field in uploaded_file_schema['fields']:
+                                if field['type'] == 'year':
+                                    field['type'] = 'integer'
                             schema = Schema(uploaded_file_schema)
 
+                        
+
+                            
+                            print(schema)
 
                             # perform validation using schema matched to uploaded file
                             report = validate(frame, schema=schema)
@@ -154,21 +160,11 @@ def main():
     if uploaded_file is not None:
         st.write(translation["uploaded_success"])
 
-        # save uploaded file to secure location (e.g., /tmp)
-        temp_dir = tempfile.TemporaryDirectory()
-        temp_location = os.path.join(temp_dir.name, uploaded_file.name)
-        with open(temp_location, 'wb') as temp_file:
-            temp_file.write(uploaded_file.getvalue())
-
-        
-        
+        dataframe = pd.read_csv(uploaded_file, skip_blank_lines =False)
+        st.write(dataframe)
         if st.button(translation["check_button"]):
             progress_bar = st.progress(0)
-            # perform validation using file path
-            report = perform_quality_check(temp_location, uploaded_file.name)
-    
-            # delete temporary folder after validation
-            temp_dir.cleanup()
+            report = perform_quality_check(dataframe, uploaded_file.name)
 
             if isinstance(report, str):
                 st.error(f"{translation['error']} {report}")
