@@ -1,1 +1,1 @@
-You can finde the webapp [here](https://appfrictionless-test0.streamlit.app/)
+You can find the webapp [here](https://appfrictionless-test0.streamlit.app/)
