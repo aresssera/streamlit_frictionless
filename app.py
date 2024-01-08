@@ -29,9 +29,6 @@ def perform_quality_check(frame, file_name):
                 try:
                     response = urlopen(datapackage_url)
                     st.write(response.getcode())
-                    st.write(response)
-
-                    st.write(response.getcode() == 200)
                     
                     if response.getcode() == 200:
                         datapackage = response.read().decode('utf-8')
