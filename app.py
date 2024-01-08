@@ -144,7 +144,8 @@ def main():
         st.write(translation["uploaded_success"])
 
         # save uploaded file locally
-        with open(uploaded_file.name, 'wb', encoding='UTF8') as f:
+        print(uploaded_file.name)
+        with open(uploaded_file.name, 'wb') as f:
             f.write(file.read())
             
 
