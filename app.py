@@ -41,8 +41,12 @@ def perform_quality_check(frame, file_name):
                         st.write(jsonAsString)
                         st.write('99999999999999999999999999')
 
+
+                        # fehler hier
                         folderPath = url_ogd + ID + '/'
+                        st.write(folderPath)
                         jsonAsString = jsonAsString.replace(os.path.join(folderPath, file_name), file_name)
+                        # fehler hier
 
                         st.write(jsonAsString)
                         updatedJSON = ast.literal_eval(jsonAsString)
