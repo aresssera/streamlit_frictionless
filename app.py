@@ -34,6 +34,7 @@ def perform_quality_check(frame, file_name):
                         datapackage = response.read().decode('utf-8')
                         st.write('INSIDE IF ')
                         datapackage_json = json.loads(datapackage)
+                        st.write(datapackage_json)
 
                         # change source file
                         jsonAsString = str(data_json)
