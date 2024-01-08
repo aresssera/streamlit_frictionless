@@ -10,7 +10,7 @@ import pandas as pd
 # function to perform quality check
 def perform_quality_check(frame, file_name):
 
-    MAX_RETRIES = 5
+    MAX_RETRIES = 2
     DELAY_SECONDS = 1
 
     try:
@@ -21,7 +21,7 @@ def perform_quality_check(frame, file_name):
             url_ogd = 'https://www.uvek-gis.admin.ch/BFE/ogd/'
 
             st.write(file_name)
-            st.write(datapackage_url)
+           
 
             # fetching datapackage with retry logic
             attempts = 0
@@ -45,7 +45,8 @@ def perform_quality_check(frame, file_name):
                         
                         updatedJSON = ast.literal_eval(jsonAsString)
 
-
+                        st.write(updatedJSON)
+                        
                         if updatedJSON:
 
                             # perform validation using schema matched to uploaded file
