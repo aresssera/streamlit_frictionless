@@ -142,14 +142,18 @@ def main():
     if uploaded_file is not None:
         st.write(translation["uploaded_success"])
 
-        # save uploaded file locally
+       
+            
+        # display content of CSV
+        dataframe = pd.read_csv(uploaded_file, sep='[;,]', engine='python', skip_blank_lines=False)
+        st.write(dataframe)
+
+         # save uploaded file locally
         print(uploaded_file.name)
         with open(uploaded_file.name, 'wb') as f:
             f.write(uploaded_file.read())
-            
 
-        dataframe = pd.read_csv(uploaded_file, sep='[;,]', engine='python', skip_blank_lines=False)
-        st.write(dataframe)
+        # whenn button is pressed
         if st.button(translation["check_button"]):
             progress_bar = st.progress(0)
             report = perform_quality_check(f, uploaded_file.name)
