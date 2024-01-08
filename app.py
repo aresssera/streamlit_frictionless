@@ -18,6 +18,7 @@ def perform_quality_check(frame, file_name):
         if file_name in ogdNbr_mapping:
             ID = ogdNbr_mapping[file_name]
             datapackage_url = f"https://www.uvek-gis.admin.ch/BFE/ogd/{ID}/datapackage.json"
+            url_ogd = 'https://www.uvek-gis.admin.ch/BFE/ogd/'
 
             # fetching datapackage with retry logic
             attempts = 0
@@ -30,37 +31,19 @@ def perform_quality_check(frame, file_name):
                         datapackage = response.read().decode('utf-8')
                         datapackage_json = json.loads(datapackage)
 
-                        # find schema corresponding to uploaded file
-                        uploaded_file_schema = None
+                        # change source file
+                        jsonAsString = str(data_json)
 
-                        for resource in datapackage_json.get('resources', []):
-
-                            #print('resource', resource)
-                            #print('path' in list(resource.keys()))
-
-                            if 'path' in list(resource.keys()) and file_name in resource['path']:
-                                #print('found')
-                                uploaded_file_schema = resource['schema']
-                                break
-
-
-                        if uploaded_file_schema:
-
-                            # convert dictionary schema into frictionless schema object
-
-
-                            for field in uploaded_file_schema['fields']:
-                                if field['type'] == 'year':
-                                    field['type'] = 'integer'
-                            schema = Schema(uploaded_file_schema)
-
+                        folderPath = url_ogd + ID + '/'
+                        jsonAsString = jsonAsString.replace(os.path.join(folderPath, file_name), file_name)
                         
+                        updatedJSON = ast.literal_eval(jsonAsString)
 
-                            
-                            print(schema)
+
+                        if updatedJSON:
 
                             # perform validation using schema matched to uploaded file
-                            report = validate(frame, schema=schema)
+                            report = validate(updatedJSON)
                             
                             return report
 
@@ -160,11 +143,16 @@ def main():
     if uploaded_file is not None:
         st.write(translation["uploaded_success"])
 
+        # save uploaded file locally
+        with open(uploaded_file.name, 'wb', encoding='UTF8') as f:
+            f.write(file.read())
+            
+
         dataframe = pd.read_csv(uploaded_file, sep='[;,]', engine='python', skip_blank_lines=False)
         st.write(dataframe)
         if st.button(translation["check_button"]):
             progress_bar = st.progress(0)
-            report = perform_quality_check(dataframe, uploaded_file.name)
+            report = perform_quality_check(f, uploaded_file.name)
 
             if isinstance(report, str):
                 st.error(f"{translation['error']} {report}")
