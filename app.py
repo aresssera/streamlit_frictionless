@@ -20,6 +20,9 @@ def perform_quality_check(frame, file_name):
             datapackage_url = f"https://www.uvek-gis.admin.ch/BFE/ogd/{ID}/datapackage.json"
             url_ogd = 'https://www.uvek-gis.admin.ch/BFE/ogd/'
 
+            print(file_name)
+            print(datapackage_url)
+
             # fetching datapackage with retry logic
             attempts = 0
             while attempts < MAX_RETRIES:
