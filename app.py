@@ -29,6 +29,7 @@ def perform_quality_check(frame, file_name):
                 try:
                     print(datapackage_url)
                     response = urlopen(datapackage_url)
+                    st.write(response)
                     
                     if response.getcode() == 200:
                         datapackage = response.read().decode('utf-8')
