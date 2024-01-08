@@ -37,7 +37,7 @@ def perform_quality_check(frame, file_name):
                         
 
                         # change source file
-                        jsonAsString = str(data_json)
+                        jsonAsString = str(datapackage_json)
                         st.write(jsonAsString)
 
                         folderPath = url_ogd + ID + '/'
