@@ -24,7 +24,7 @@ def perform_quality_check(frame, file_name):
             attempts = 0
             while attempts < MAX_RETRIES:
                 try:
-                    #print(datapackage_url)
+                    print(datapackage_url)
                     response = urlopen(datapackage_url)
                     
                     if response.getcode() == 200:
