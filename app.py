@@ -10,7 +10,7 @@ import pandas as pd
 # function to perform quality check
 def perform_quality_check(frame, file_name):
 
-    MAX_RETRIES = 2
+    MAX_RETRIES = 5
     DELAY_SECONDS = 1
 
     try:
