@@ -38,6 +38,7 @@ def perform_quality_check(frame, file_name):
 
                         # change source file
                         jsonAsString = str(data_json)
+                        st.write(jsonAsString)
 
                         folderPath = url_ogd + ID + '/'
                         jsonAsString = jsonAsString.replace(os.path.join(folderPath, file_name), file_name)
