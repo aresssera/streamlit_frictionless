@@ -146,7 +146,7 @@ def main():
         # save uploaded file locally
         print(uploaded_file.name)
         with open(uploaded_file.name, 'wb') as f:
-            f.write(file.read())
+            f.write(uploaded_file.read())
             
 
         dataframe = pd.read_csv(uploaded_file, sep='[;,]', engine='python', skip_blank_lines=False)
