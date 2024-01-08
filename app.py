@@ -76,7 +76,6 @@ def get_error_messages(report):
     return text
 
 
-
 #-------------------------------------------------------------------------------
 # translation dictionaries
 translations = {
