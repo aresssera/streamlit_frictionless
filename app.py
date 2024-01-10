@@ -154,6 +154,7 @@ def main():
     # display content based on selected language
     translation = translations[st.session_state.language]
 
+    
     st.title(translation["title"])
 
     uploaded_file = st.file_uploader(translation["upload"], type=["csv"])
