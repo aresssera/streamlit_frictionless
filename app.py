@@ -1,6 +1,7 @@
 import streamlit as st
 import time
 import json
+import os
 from frictionless import validate
 from frictionless import Schema
 from mapping import ogdNbr_mapping
@@ -166,9 +167,9 @@ def main():
         dataframe = pd.read_csv(uploaded_file, sep='[;,]', engine='python', skip_blank_lines=False)
         st.write(dataframe)
 
-         # save uploaded file locally
-        print(uploaded_file.name)
+         # save file name
         file_name = uploaded_file.name
+        
         with open(uploaded_file.name, 'wb') as f:
             f.write(uploaded_file.read())
 
