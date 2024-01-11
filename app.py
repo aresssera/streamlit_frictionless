@@ -168,13 +168,14 @@ def main():
 
          # save uploaded file locally
         print(uploaded_file.name)
+        file_name = uploaded_file.name
         with open(uploaded_file.name, 'wb') as f:
             f.write(uploaded_file.read())
 
         # whenn button is pressed
         if st.button(translation["check_button"]):
             progress_bar = st.progress(0)
-            report = perform_quality_check(f, uploaded_file.name)
+            report = perform_quality_check(f, file_name)
 
             if isinstance(report, str):
                 st.error(f"{translation['error']} {report}")
