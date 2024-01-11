@@ -37,31 +37,41 @@ def perform_quality_check(frame, file_name):
                         datapackage_json = json.loads(datapackage)
                         
 
-                        # change source file
-                        jsonAsString = str(datapackage_json)
-                        st.write(jsonAsString)
-                        st.write('99999999999999999999999999')
+                        # find schema corresponding to uploaded file
+                        uploaded_file_schema = None
+
+                        for resource in datapackage_json.get('resources', []):
+
+                            #print('resource', resource)
+                            #print('path' in list(resource.keys()))
+
+                            if 'path' in list(resource.keys()) and file_name in resource['path']:
+                                #print('found')
+                                uploaded_file_schema = resource['schema']
+                                break
 
 
-                        # fehler hier
-                        folderPath = url_ogd + ID + '/'
-                        st.write(os.path.join(folderPath, file_name))
-                        st.write('88888888888888888888888888888888')
-                        jsonAsString = jsonAsString.replace(os.path.join(folderPath, file_name), file_name)
-                        st.write(jsonAsString)
-                        st.write('77777777777777777777777777777777777777777')
-                        # fehler hier
+                        if uploaded_file_schema:
 
-                        st.write(jsonAsString)
-                        st.write('666666666666666666666666666666666666666')
-                        updatedJSON = ast.literal_eval(jsonAsString)
+                            # convert dictionary schema into frictionless schema object
 
-                        st.write(updatedJSON)
+                            '''
+                            for field in uploaded_file_schema['fields']:
+                                if field['type'] == 'year':
+                                    field['type'] = 'integer'
+
+                            '''
+
+                            
+                            schema = Schema(uploaded_file_schema)
+                                                    
                         
-                        if updatedJSON:
+
+                            
+                            print(schema)
 
                             # perform validation using schema matched to uploaded file
-                            report = validate(updatedJSON)
+                            report = validate(file_name, schema=schema)
                             
                             return report
 
