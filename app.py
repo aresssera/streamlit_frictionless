@@ -1,12 +1,12 @@
-import streamlit as st
 import time
 import json
-import os
+import pandas as pd
+import streamlit as st
 from frictionless import validate
 from frictionless import Schema
 from mapping import ogdNbr_mapping
 from urllib.request import urlopen
-import pandas as pd
+
 
 # function to perform quality check
 def perform_quality_check(frame, file_name):
@@ -19,61 +19,51 @@ def perform_quality_check(frame, file_name):
         if file_name in ogdNbr_mapping:
             ID = ogdNbr_mapping[file_name]
             datapackage_url = f"https://www.uvek-gis.admin.ch/BFE/ogd/{ID}/datapackage.json"
-            url_ogd = 'https://www.uvek-gis.admin.ch/BFE/ogd/'
-
-            st.write(file_name)
-           
 
             # fetching datapackage with retry logic
             attempts = 0
             while attempts < MAX_RETRIES:
                 try:
+                    #print(datapackage_url)
                     response = urlopen(datapackage_url)
-                    st.write(response.getcode())
                     
                     if response.getcode() == 200:
                         datapackage = response.read().decode('utf-8')
-                        st.write('INSIDE IF ')
                         datapackage_json = json.loads(datapackage)
-                        
 
                         # find schema corresponding to uploaded file
                         uploaded_file_schema = None
 
                         for resource in datapackage_json.get('resources', []):
 
-                            #print('resource', resource)
-                            #print('path' in list(resource.keys()))
-
                             if 'path' in list(resource.keys()) and file_name in resource['path']:
-                                #print('found')
                                 uploaded_file_schema = resource['schema']
                                 break
 
 
                         if uploaded_file_schema:
 
-                            # convert dictionary schema into frictionless schema object
+                            
 
-                            '''
+                            # pandas has no dtype 'year' --> so it is changed to 'integer'
                             for field in uploaded_file_schema['fields']:
                                 if field['type'] == 'year':
                                     field['type'] = 'integer'
 
-                            '''
-
-                            
+                            # convert dictionary schema into frictionless schema object
                             schema = Schema(uploaded_file_schema)
-                                                    
+
                         
 
                             
-                            print(schema)
-
-                            st.write(file_name)
+                            # change the data type of the first column to 'float' if all dtypes are 'int'
+                            # for some reason, if all dtypes of frame are 'int', it throws an error even if the CSV is valid
+                            # to escape that, change the type of the first column
+                            if all(frame.dtypes == 'int64'):
+                                frame.iloc[:, 0] = frame.iloc[:, 0].astype(float)
 
                             # perform validation using schema matched to uploaded file
-                            report = validate(file_name, schema=schema)
+                            report = validate(frame, schema=schema)
                             
                             return report
 
@@ -104,6 +94,7 @@ def get_error_messages(report):
         text = text + err.title + ':\n' + err.message + '\n\n'
 
     return text
+
 
 
 #-------------------------------------------------------------------------------
@@ -172,22 +163,11 @@ def main():
     if uploaded_file is not None:
         st.write(translation["uploaded_success"])
 
-       
-            
-        # display content of CSV
         dataframe = pd.read_csv(uploaded_file, sep='[;,]', engine='python', skip_blank_lines=False)
         st.write(dataframe)
-
-         # save file name
-        file_name = uploaded_file.name
-        
-        with open(uploaded_file.name, 'wb') as f:
-            f.write(uploaded_file.read())
-
-        # whenn button is pressed
         if st.button(translation["check_button"]):
             progress_bar = st.progress(0)
-            report = perform_quality_check(f, file_name)
+            report = perform_quality_check(dataframe, uploaded_file.name)
 
             if isinstance(report, str):
                 st.error(f"{translation['error']} {report}")
