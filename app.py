@@ -70,6 +70,8 @@ def perform_quality_check(frame, file_name):
                             
                             print(schema)
 
+                            st.write(file_name)
+
                             # perform validation using schema matched to uploaded file
                             report = validate(file_name, schema=schema)
                             
